@@ -1,30 +1,194 @@
+/* ---------------------------------------------
+   Tailwind layers
+--------------------------------------------- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Base dark */
+/* ---------------------------------------------
+   Base & typographie
+--------------------------------------------- */
 html, body { @apply bg-bg text-slate-200 antialiased; }
 a { @apply underline-offset-4 decoration-transparent hover:decoration-primary; }
+::selection { background: rgba(129,140,248,.3); color: #fff; }
 
-/* Boutons */
-.btn { @apply inline-flex items-center gap-2 rounded-2xl px-5 py-2.5 text-sm font-semibold
-text-white bg-primary shadow-glow hover:bg-primary/90 transition-colors; }
-.btn-ghost { @apply inline-flex items-center gap-2 rounded-2xl px-5 py-2.5 text-sm font-medium
-text-gray-200 border border-stroke bg-transparent hover:bg-white/10 transition-colors; }
+/* ---------------------------------------------
+   Boutons
+--------------------------------------------- */
+.btn {
+    @apply inline-flex items-center gap-2 rounded-2xl px-5 py-2.5 text-sm font-semibold
+    text-slate-900 transition-colors shadow-lg;
+    background-image: linear-gradient(90deg,#a78bfa 0%, #818cf8 45%, #60a5fa 100%);
+}
+.btn:hover   { @apply opacity-90; }
+.btn:active  { @apply opacity-80; }
 
-/* Cards glass */
-.card { @apply rounded-2xl border border-stroke bg-panel backdrop-blur shadow-soft; }
-.section { @apply py-16 md:py-24; }
+.btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-2xl px-5 py-2.5 text-sm font-medium
+    text-gray-200 border border-white/15 bg-white/5 hover:bg-white/10 transition-colors;
+}
+
+/* ---------------------------------------------
+   Cards & sections
+--------------------------------------------- */
+.card   { @apply rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur shadow-glass; }
+.section{ @apply py-16 md:py-24; }
 .section-title { @apply text-3xl md:text-4xl font-semibold tracking-tight; }
 
-/* Tags chips */
+/* ---------------------------------------------
+   Tags / chips
+--------------------------------------------- */
 .tag { @apply text-xs px-2.5 py-1 rounded-full bg-white/10 border border-white/10; }
 
-/* Skeleton */
+.skill-chip {
+    transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease;
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[13px] text-white/85;
+}
+.skill-chip:hover { transform: translateY(-1px); background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.18); }
+
+/* ---------------------------------------------
+   Skeleton
+--------------------------------------------- */
 .skeleton { @apply rounded-xl bg-white/5 border border-white/10; min-height: 180px; }
 
-/* Subtle noise overlay (DA) */
+/* ---------------------------------------------
+   Effet de bruit très léger (overlay)
+--------------------------------------------- */
 .bg-noise {
     position: fixed; inset: 0; pointer-events: none; opacity: .035;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .18 0'/%3E%3C/filter%3E%3Crect filter='url(%23n)' width='100%25' height='100%25'/%3E%3C/svg%3E");
+}
+
+/* ---------------------------------------------
+   Gradients de texte (palette indigo/violet)
+--------------------------------------------- */
+/* Alias "gradient-text" utilisé parfois → pointe vers la palette indigo */
+.gradient-text,
+.text-gradient-indigo {
+    background: linear-gradient(90deg,#a78bfa 0%, #818cf8 40%, #60a5fa 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* ---------------------------------------------
+   Titres & accents
+--------------------------------------------- */
+.text-edge   { color: rgba(255,255,255,0.35); font-weight: 800; letter-spacing: -0.02em; }
+.accent-bar  { background: linear-gradient(90deg,#a78bfa 0%, #818cf8 60%, #60a5fa 100%); height:3px; border-radius:9999px; }
+.accent-top  { background: linear-gradient(90deg, transparent, rgba(129,140,248,0.8), transparent); height:1px; }
+
+/* ---------------------------------------------
+   Ombres
+--------------------------------------------- */
+.shadow-glass {
+    box-shadow:
+            0 10px 24px rgba(0,0,0,0.25),
+            inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.shadow-soft {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+}
+
+/* ---------------------------------------------
+   BackgroundFX (aurora / grid / dots)
+   → cohérent avec components/BackgroundFX.tsx
+--------------------------------------------- */
+/* Blobs aurora visibles + mouvements amples */
+.aurora-blob {
+    position: absolute;
+    width: 48rem;            /* 768px */
+    height: 48rem;
+    opacity: 0.22;
+    filter: blur(70px);
+    border-radius: 9999px;
+    background-image: linear-gradient(to right, #a78bfa, #818cf8, #60a5fa);
+    will-change: transform, opacity;
+}
+
+/* Trajectoires distinctes pour 3 blobs */
+@keyframes driftA {
+    0%   { transform: translate3d(0,0,0) rotate(0deg) scale(1); }
+    50%  { transform: translate3d(8%, -6%, 0) rotate(12deg) scale(1.05); }
+    100% { transform: translate3d(16%, 2%, 0) rotate(22deg) scale(1.1); }
+}
+@keyframes driftB {
+    0%   { transform: translate3d(0,0,0) rotate(0deg) scale(1); }
+    50%  { transform: translate3d(-10%, 8%, 0) rotate(-10deg) scale(1.06); }
+    100% { transform: translate3d(-20%, -4%, 0) rotate(-18deg) scale(1.12); }
+}
+@keyframes driftC {
+    0%   { transform: translate3d(0,0,0) rotate(0deg) scale(1); }
+    50%  { transform: translate3d(6%, 10%, 0) rotate(8deg) scale(1.04); }
+    100% { transform: translate3d(14%, -6%, 0) rotate(16deg) scale(1.08); }
+}
+.anim-drift-a { animation: driftA 26s ease-in-out infinite alternate; }
+.anim-drift-b { animation: driftB 32s ease-in-out infinite alternate; }
+.anim-drift-c { animation: driftC 28s ease-in-out infinite alternate; }
+
+/* Balayage "grid" bien visible */
+@keyframes sweepMove { 0% { transform: translateX(0); } 100% { transform: translateX(200%); } }
+.animate-sweep { animation: sweepMove 16s linear infinite; }
+
+/* Flottement doux "dots" */
+@keyframes floatSlow { 0% { transform: translateY(0); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0); } }
+.animate-float-slow { animation: floatSlow 10s ease-in-out infinite; }
+
+/* Accessibilité : respecte prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    .anim-drift-a, .anim-drift-b, .anim-drift-c,
+    .animate-sweep, .animate-float-slow { animation: none !important; }
+}
+
+/* ---------------------------------------------
+   Divers
+--------------------------------------------- */
+html { scroll-behavior: smooth; }
+/* Blobs plus discrets */
+.aurora-blob-sm{
+    position:absolute;
+    width: 26rem;   /* plus petit */
+    height:26rem;
+    opacity:.14;    /* plus léger */
+    filter: blur(42px);
+    border-radius:9999px;
+    background-image: linear-gradient(to right,#a78bfa,#818cf8,#60a5fa);
+    will-change: transform,opacity;
+}
+
+/* Drift plus court (et moins ample) */
+@keyframes driftA{
+    0%{ transform: translate3d(0,0,0) scale(1); }
+    100%{ transform: translate3d(8%, -6%, 0) scale(1.03); }
+}
+@keyframes driftB{
+    0%{ transform: translate3d(0,0,0) scale(1); }
+    100%{ transform: translate3d(-10%, 6%, 0) scale(1.04); }
+}
+@keyframes driftC{
+    0%{ transform: translate3d(0,0,0) scale(1); }
+    100%{ transform: translate3d(6%, 8%, 0) scale(1.02); }
+}
+.anim-driftA{ animation: driftA 18s ease-in-out infinite alternate; }
+.anim-driftB{ animation: driftB 22s ease-in-out infinite alternate; }
+.anim-driftC{ animation: driftC 20s ease-in-out infinite alternate; }
+
+/* Motion-safe */
+@media (prefers-reduced-motion: reduce){
+    .anim-driftA,.anim-driftB,.anim-driftC{ animation:none !important; }
+}
+/* CTA dégradé + effet shine */
+.btn-cta{
+    background: linear-gradient(90deg,#a78bfa 0%, #818cf8 45%, #60a5fa 100%);
+    position: relative; overflow: hidden;
+    box-shadow: 0 8px 24px rgba(99,102,241,.25);
+}
+.shine{
+    background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.45) 40%, transparent 60%);
+    transform: translateX(-120%);
+    animation: shineMove 3.2s ease-in-out infinite;
+    mix-blend-mode: screen;
+}
+@keyframes shineMove{
+    0%{ transform: translateX(-120%); }
+    45%{ transform: translateX(120%); }
+    100%{ transform: translateX(120%); }
 }
